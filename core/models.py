@@ -1,7 +1,7 @@
 
 from datetime import date
 
-class SimpleReleaseEntry :
+class ReleaseEntry :
 	def __init__(self) :
 		self.link: str
 		self.title: str
@@ -9,7 +9,9 @@ class SimpleReleaseEntry :
 		self.number: "int | None" = None
 		self.editor: "str | None" = None
 		self.release: date
-
-class FullReleaseEntry :
-	def __init__(self) :
-		pass
+		self.price: "str | None" = None
+		self.pages: "int | None" = None
+		self.status: "str | None" = None
+		self.pub_country: "str | None" = None
+		self.pub_number: "int | None" = None
+		self.pub_status: "str | None" = None
