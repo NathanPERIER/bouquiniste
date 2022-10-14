@@ -1,7 +1,7 @@
 
 from datetime import date
 
-class ListItem :
+class SimpleReleaseEntry :
 	def __init__(self) :
 		self.link: str
 		self.title: str
@@ -10,6 +10,6 @@ class ListItem :
 		self.editor: "str | None" = None
 		self.release: date
 
-class ReleaseEntry :
+class FullReleaseEntry :
 	def __init__(self) :
 		pass

@@ -1,4 +1,4 @@
-from core.models import ListItem
+from core.models import SimpleReleaseEntry
 from utils.bs4 import Soup, Tag
 
 import re
@@ -10,7 +10,7 @@ title_reg = re.compile(r'(.+?)(?: Vol.([0-9]+))?')
 
 class ListingPage :
 	def __init__(self) :
-		self.listing: "Sequence[ListItem]"
+		self.listing: "Sequence[SimpleReleaseEntry]"
 		self.prev: "str | None" = None
 		self.next: "str | None" = None
 
@@ -32,8 +32,8 @@ def readListingPage(soup: Soup) -> ListingPage :
 	return res
 
 
-def readListingItem(item: Tag) -> ListItem :
-	res = ListItem()
+def readListingItem(item: Tag) -> SimpleReleaseEntry :
+	res = SimpleReleaseEntry()
 	title = item.select_one('a.title')
 	res.link = title['href']
 	match = title_reg.fullmatch(title.innerText().strip())
