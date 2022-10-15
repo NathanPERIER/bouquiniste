@@ -1,10 +1,12 @@
 
 
-from typing import Iterator, Mapping, TypeVar, Optional
+from operator import index
+from typing import Iterator, Iterable, Mapping, Sequence, TypeVar, Optional
 
+
+T  = TypeVar('T')
 KT = TypeVar('KT')
 VT = TypeVar('VT')
-
 
 class ErrorlessMapping(Mapping[KT,VT]) :
 
@@ -21,3 +23,19 @@ class ErrorlessMapping(Mapping[KT,VT]) :
 		if key not in self.mapping :
 			return None
 		return self.mapping.__getitem__(key)
+
+
+class FlattenIterator(Iterator[T]) :
+
+	def __init__(self, wrapped: Iterable[Sequence[T]]) :
+		self.iterator = iter(wrapped)
+		self.seq: Sequence[T] = []
+		self.index: int = 0
+	
+	def __next__(self) -> T :
+		while self.index >= len(self.seq) :
+			self.seq = next(self.iterator)
+			self.index = 0
+		res = self.seq[self.index]
+		self.index += 1
+		return res
