@@ -1,9 +1,12 @@
 from core.models import ReleaseEntry
 from utils.bs4 import Soup, Tag
+from utils.requests import requestSoup
 
 import re
 from datetime import datetime
 from collections.abc import Sequence
+
+BASE_URL = 'https://www.manga-news.com'
 
 title_reg = re.compile(r'(.+?)(?: Vol.([0-9]+))?')
 
@@ -13,6 +16,19 @@ class ListingPage :
 		self.listing: "Sequence[ReleaseEntry]"
 		self.prev: "str | None" = None
 		self.next: "str | None" = None
+
+
+def getFirstListingPage(month: int, year: int) -> ListingPage :
+	url = f"https://www.manga-news.com/index.php/planning?p_year={year}&p_month={month}"
+	soup = requestSoup(url)
+	return readListingPage(soup)
+
+
+def getNextListingPage(page: ListingPage) -> "ListingPage | None" :
+	if page.next is None :
+		return None
+	soup = requestSoup(f"{BASE_URL}{page.next}")
+	return readListingPage(soup)
 
 
 def readListingPage(soup: Soup) -> ListingPage :
