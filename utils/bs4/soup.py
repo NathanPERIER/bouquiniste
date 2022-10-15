@@ -9,7 +9,7 @@ from collections.abc import Sequence
 
 class Soup(BS4Node) :
 
-	def __init__(self, soup: bs4.element.BeautifulSoup, url: str) :
+	def __init__(self, soup: "bs4.element.BeautifulSoup", url: str) :
 		super().__init__(soup)
 		self.url = url
 		self.soup = soup
