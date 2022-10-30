@@ -1,6 +1,7 @@
 
 from sources.base import Source
 from core.models import ReleaseEntry
+from sources.collector import register
 from sources.custom.manga_news.listing import ListingPage, getFirstListingPage, getNextListingPage
 from sources.custom.manga_news.details import findDetails
 from utils.iterables.multiple_months import MultiMonthsIterable
@@ -10,7 +11,7 @@ from utils.wrappers import FlattenIterator
 from datetime import date
 from typing import Iterable, Sequence
 
-
+@register("manga_news")
 class MangaNewsSource(Source) :
 
 	def getEntries(self, begin: date, end: date) -> "Iterable[ReleaseEntry]" :
