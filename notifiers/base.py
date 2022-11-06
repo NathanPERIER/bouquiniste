@@ -1,5 +1,5 @@
 
-from core.models import ReleaseEntry
+from core.models import ReleaseEntry, SourceInfo
 
 from typing import Mapping, Any
 
@@ -15,7 +15,7 @@ class Notifier :
 	def __init__(self, config: NotifierConfig) :
 		pass
 
-	def notifyRelease(self, release: ReleaseEntry) :
+	def notifyRelease(self, release: ReleaseEntry, info: SourceInfo) :
 		raise NotImplementedError()
 
 	def notifyError(self, error: Exception) :
