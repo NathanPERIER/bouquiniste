@@ -7,7 +7,7 @@ from abc import ABC, abstractmethod
 T  = TypeVar('T')
 V  = TypeVar('V')
 
-ONE_MONTH_DELTA = relativedelta(month=1)
+ONE_MONTH_DELTA = relativedelta(months=1)
 
 class MultiMonthsIterable(ABC,Generic[V,T],Iterator[Sequence[T]]) :
 	
