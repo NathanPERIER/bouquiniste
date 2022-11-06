@@ -1,6 +1,7 @@
 from core.models import ReleaseEntry
 from utils.bs4 import Soup, Tag
 from utils.requests import requestSoup
+from utils.exceptions import FormatException
 
 import re
 from datetime import datetime
@@ -54,8 +55,7 @@ def readListingItem(item: Tag) -> ReleaseEntry :
 	res.link = title['href']
 	match = title_reg.fullmatch(title.innerText().strip())
 	if match is None :
-		# TODO new exception type
-		raise Exception(f"Title {title} does not match regex {title_reg.pattern}")
+		raise FormatException(f"Title {title} does not match regex {title_reg.pattern}")
 	res.title = match.group(1).strip()
 	if match.group(2) is not None :
 		res.number = int(match.group(2))
