@@ -15,10 +15,7 @@ class Notifier :
 	def __init__(self, config: NotifierConfig) :
 		pass
 
-	def notifyImportantRelease(self, release: ReleaseEntry) :
-		raise NotImplementedError()
-
-	def notifyUnregisteredReleases(self, releases: "Sequence[ReleaseEntry]") :
+	def notifyRelease(self, release: ReleaseEntry) :
 		raise NotImplementedError()
 
 	def notifyError(self, error: Exception) :

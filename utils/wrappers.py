@@ -1,6 +1,4 @@
 
-
-from operator import index
 from typing import Iterator, Iterable, Mapping, Sequence, TypeVar, Optional
 
 
@@ -18,6 +16,9 @@ class ErrorlessMapping(Mapping[KT,VT]) :
 	
 	def __iter__(self) -> Iterator[KT] :
 		return self.mapping.__iter__()
+
+	def __contains__(self, key: KT):
+		return self.mapping.__contains__(key)
 
 	def __getitem__(self, key: KT) -> Optional[VT] :
 		if key not in self.mapping :

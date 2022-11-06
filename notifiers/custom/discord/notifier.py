@@ -14,14 +14,8 @@ class DiscordNotifier(Notifier) :
 	def __init__(self, config: DiscordNotifierConfig) :
 		self.config = config
 	
-	def notifyImportantRelease(self, release: ReleaseEntry) :
+	def notifyRelease(self, release: ReleaseEntry) :
 		webhook = DiscordWebhook(self.config.releases)
-		raise NotImplementedError()
-
-	def notifyUnregisteredReleases(self, releases: "Sequence[ReleaseEntry]") :
-		if self.config.flood is None :
-			return
-		webhook = DiscordWebhook(self.config.flood)
 		raise NotImplementedError()
 	
 	def notifyError(self, error: Exception) :
