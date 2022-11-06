@@ -1,6 +1,6 @@
 
 from sources.base import Source
-from core.models import ReleaseEntry
+from core.models import ReleaseEntry, SourceInfo
 from sources.collector import register
 from sources.custom.manga_news.listing import ListingPage, getFirstListingPage, getNextListingPage
 from sources.custom.manga_news.details import findDetails
@@ -21,7 +21,12 @@ class MangaNewsSource(Source) :
 
 	def refineEntry(self, entry: ReleaseEntry) :
 		findDetails(entry)
-
+	
+	def getInfo(self) -> SourceInfo :
+		res = SourceInfo()
+		res.name = 'Manga news'
+		res.image = 'https://www.manga-news.com/favicon.ico'
+		return res
 
 
 class MN_OneMonthIterable(OneMonthIterable[ListingPage,ReleaseEntry]) :

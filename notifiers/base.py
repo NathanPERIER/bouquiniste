@@ -1,7 +1,7 @@
 
 from core.models import ReleaseEntry
 
-from typing import Sequence, Mapping, Any
+from typing import Mapping, Any
 
 
 class NotifierConfig :

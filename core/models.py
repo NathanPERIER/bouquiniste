@@ -24,3 +24,9 @@ class ReleaseEntry :
 		self.status: PublicationStatus = PublicationStatus.UNKNOWN
 		self.pub_status: PublicationStatus = PublicationStatus.UNKNOWN
 		self.pub_number: "int | None" = None
+
+
+class SourceInfo :
+	def __init__(self) :
+		self.name: str
+		self.image: "str | None" = None

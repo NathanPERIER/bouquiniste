@@ -1,5 +1,5 @@
 
-from core.models import ReleaseEntry
+from core.models import ReleaseEntry, SourceInfo
 
 from typing import Iterable
 
@@ -12,4 +12,7 @@ class Source :
 		raise NotImplementedError()
 
 	def refineEntry(self, entry: ReleaseEntry) :
+		raise NotImplementedError()
+	
+	def getInfo(self) -> SourceInfo :
 		raise NotImplementedError()
