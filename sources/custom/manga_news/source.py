@@ -25,7 +25,7 @@ class MangaNewsSource(Source) :
 	def getInfo(self) -> SourceInfo :
 		res = SourceInfo()
 		res.name = 'Manga news'
-		res.image = 'https://www.manga-news.com/favicon.ico'
+		res.image = 'https://www.manga-news.com/mn-icon.png'
 		return res
 
 
