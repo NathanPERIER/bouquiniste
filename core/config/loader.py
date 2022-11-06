@@ -59,6 +59,6 @@ def __b_loadList(name: str) -> "Sequence[str]" :
 	return [
 		x for x in 
 		(y.strip() for y in res)
-		if not x.startswith('//')
+		if len(x) > 0 and not x.startswith('//')
 	]
 	
