@@ -2,12 +2,12 @@
 from core.config import checker
 from core.config.definitions import NOTIFIERS_FILE, SOURCES_FILE, LISTS_FOLDER, ConfiguredSource
 from notifiers import Notifier, getNotifier
-from sources import Source, getSource
+from sources import getSource
 from utils.exceptions import BadConfigException
 
 import os
 import json
-from typing import Mapping, Sequence, Iterable, Any
+from typing import Mapping, Sequence, Any
 
 
 def loadJson(path: str) -> Any :
@@ -15,9 +15,9 @@ def loadJson(path: str) -> Any :
 		return json.load(f)
 
 
-def load() -> "Iterable[ConfiguredSource]" :
+def load() -> "Sequence[ConfiguredSource]" :
 	checker.check()
-	res: "Iterable[ConfiguredSource]" = []
+	res: "Sequence[ConfiguredSource]" = []
 	notifiers = __b_loadNotifiers()
 	lists: "Mapping[str,Sequence[str]]" = {}
 	sources_config: "Sequence[Mapping[str,Any]]" = loadJson(SOURCES_FILE)
@@ -51,7 +51,7 @@ def __b_loadNotifiers() -> "Mapping[str,Notifier]" :
 def __b_loadList(name: str) -> "Sequence[str]" :
 	if name.startswith('/') :
 		name = name[1:]
-	path = os.path.join(LISTS_FOLDER, name + ".json")
+	path = os.path.join(LISTS_FOLDER, name + ".conf")
 	if not os.path.isfile(path) :
 		raise BadConfigException(f"List {name} not found")
 	with open(path, 'r') as f :

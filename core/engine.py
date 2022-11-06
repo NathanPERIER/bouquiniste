@@ -2,11 +2,18 @@
 from core import config
 from core.config import ConfiguredSource
 
+import logging
 from datetime import date
+
+logger = logging.getLogger(__name__)
 
 
 def run(begin: date, end: date) :
+	logger.info("Working on the time period from %s to %s", begin, end)
 	sources = config.load()
+	if len(sources) == 0 :
+		logger.warning('No sources found, exitting')
+		return
 	for src in sources :
 		try :
 			__b_processSource(src, begin, end)
