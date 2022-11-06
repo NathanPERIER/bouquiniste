@@ -10,8 +10,8 @@ __THIS_FOLDER = os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath
 CONFIG_FOLDER = os.path.join(__THIS_FOLDER, 'config')
 LISTS_FOLDER = os.path.join(CONFIG_FOLDER, 'lists')
 
-NOTIFIERS_FILE = os.path.join(__THIS_FOLDER, 'notifiers.json')
-SOURCES_FILE = os.path.join(__THIS_FOLDER, 'sources.json')
+NOTIFIERS_FILE = os.path.join(CONFIG_FOLDER, 'notifiers.json')
+SOURCES_FILE = os.path.join(CONFIG_FOLDER, 'sources.json')
 
 
 class ConfiguredSource :
