@@ -19,10 +19,10 @@ def load() -> "Sequence[ConfiguredSource]" :
 	checker.check()
 	res: "Sequence[ConfiguredSource]" = []
 	notifiers = __b_loadNotifiers()
-	lists: "Mapping[str,Sequence[str]]" = {}
-	sources_config: "Sequence[Mapping[str,Any]]" = loadJson(SOURCES_FILE)
-	for source_cfg in sources_config :
-		cs = ConfiguredSource()
+	lists: "Mapping[str,Mapping[str,Sequence[str]]]" = {}
+	sources_config: "Mapping[str,Mapping[str,Any]]" = loadJson(SOURCES_FILE)
+	for source_id, source_cfg in sources_config.items() :
+		cs = ConfiguredSource(source_id)
 		cs.source = getSource(source_cfg['type'])
 		cs.notifiers = []
 		for notifier_id in set(source_cfg['notifiers']) :
@@ -32,11 +32,12 @@ def load() -> "Sequence[ConfiguredSource]" :
 		if len(cs.notifiers) == 0 :
 			raise BadConfigException('All sources must use at least one notifier')
 		if source_cfg['list'] in lists :
-			cs.list = lists[source_cfg['list']]
+			list_conf = lists[source_cfg['list']]
 		else :
-			lst = __b_loadList(source_cfg['list'])
-			lists[source_cfg['list']] = lst
-			cs.list = lst
+			list_conf = __b_loadList(source_cfg['list'])
+			lists[source_cfg['list']] = list_conf
+		cs.names = list_conf['name']
+		cs.ids = list_conf['id']
 		res.append(cs)
 	return res
 
@@ -48,17 +49,12 @@ def __b_loadNotifiers() -> "Mapping[str,Notifier]" :
 		for notifier_id, config in notifiers_conf.items()
 	}
 
-def __b_loadList(name: str) -> "Sequence[str]" :
+def __b_loadList(name: str) -> "Mapping[str,Sequence[str]]" :
 	if name.startswith('/') :
 		name = name[1:]
-	path = os.path.join(LISTS_FOLDER, name + ".conf")
+	path = os.path.join(LISTS_FOLDER, name + ".json")
 	if not os.path.isfile(path) :
 		raise BadConfigException(f"List {name} not found")
-	with open(path, 'r') as f :
-		res = f.readlines()
-	return [
-		x for x in 
-		(y.strip() for y in res)
-		if len(x) > 0 and not x.startswith('//')
-	]
+	return loadJson(path)
+	
 	

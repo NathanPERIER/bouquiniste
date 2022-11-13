@@ -13,7 +13,7 @@ def check() :
 			logger.info("Create folder `%s`", folder)
 			os.mkdir(folder)
 	__b_createFileIfNotExists(NOTIFIERS_FILE, '{}')
-	__b_createFileIfNotExists(SOURCES_FILE, '[]')
+	__b_createFileIfNotExists(SOURCES_FILE, '{}')
 
 
 def __b_createFileIfNotExists(path: str, content: str) :
