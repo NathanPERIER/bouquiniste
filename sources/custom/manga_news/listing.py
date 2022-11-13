@@ -4,12 +4,16 @@ from utils.requests import requestSoup
 from utils.exceptions import FormatException
 
 import re
+import logging
 from datetime import datetime
 from collections.abc import Sequence
+
+logger = logging.getLogger(__name__)
 
 BASE_URL = 'https://www.manga-news.com'
 
 title_reg = re.compile(r'(.+?)(?: Vol.([0-9]+))?')
+manga_id_reg = re.compile(r'https://www\.manga-news\.com/index\.php/manga/([^/]+)(?:/.*)?')
 
 
 class ListingPage :
@@ -59,6 +63,12 @@ def readListingItem(item: Tag) -> ReleaseEntry :
 	res.title = match.group(1).strip()
 	if match.group(2) is not None :
 		res.number = int(match.group(2))
+	match = manga_id_reg.fullmatch(res.link)
+	if match is None :
+		logger.warning("Could not infer manga identifier for URL %s", res.link)
+		res.manga_id = 'unknown'
+	else :
+		res.manga_id = match.group(1)
 	res.editor = item.select_one('span.editor').innerText().strip()
 	res.image = item.select_one('img.entryPicture')['src']
 	if len(res.image) == 0 :

@@ -13,6 +13,8 @@ class ReleaseEntry :
 	def __init__(self) :
 		self.link: str
 		self.title: str
+		self.manga_id: str
+		self.series_id: "str | None" = None
 		self.image: "str | None"  = None
 		self.number: "int | None" = None
 		self.editor: "str | None" = None
