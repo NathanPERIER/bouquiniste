@@ -1,14 +1,14 @@
 #!/usr/bin/python3
 
+import logging
+logging.basicConfig(level=logging.DEBUG, format="%(asctime)s [%(levelname)s] %(message)s", datefmt='%d/%m/%Y %H:%M:%S')
+
 from core import engine
 
 import re
 import sys
-import logging
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
-
-logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s", datefmt='%d/%m/%Y %H:%M:%S')
 
 
 def help(retcode: int) :
@@ -25,7 +25,7 @@ def main() :
 	if args[0] in ['-h', '--help'] :
 		help(0)
 	
-	m = re.fullmatch(r'([0-9]+m)?([0-9]+w)?([0-9]+d)?', args[0])
+	m = re.fullmatch(r'([0-9]+m)?([0-9]+w)?([0-9]+d)?', string=args[0])
 	if m is None :
 		print(f"Bad argument format : `{args[0]}`")
 		sys.exit(1)
