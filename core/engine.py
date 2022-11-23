@@ -1,7 +1,7 @@
 
 from core import config
 from core.config import ConfiguredSource
-from database import SqliteConnection, initDatabase, getDatabaseConnection
+from database import initDatabase, getDatabaseConnection
 import database.queries
 
 import logging

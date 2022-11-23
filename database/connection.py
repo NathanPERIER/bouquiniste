@@ -20,6 +20,7 @@ class SqliteConnection :
 	
 	def __enter__(self) -> "SqliteConnection" :
 		self.con = sqlite3.connect(self.path)
+		self.con.set_trace_callback(lambda s: logger.debug(s))
 		logger.debug("Initiated SQLite connection to %s", self.path)
 		return self
 

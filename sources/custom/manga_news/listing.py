@@ -54,8 +54,15 @@ def readListingPage(soup: Soup) -> ListingPage :
 
 
 def readListingItem(item: Tag) -> ReleaseEntry :
-	res = ReleaseEntry()
 	title = item.select_one('a.title')
+	link = title['href']
+	match = manga_id_reg.fullmatch(link)
+	if match is None :
+		logger.warning("Could not infer manga identifier for URL %s", link)
+		manga_id = 'unknown'
+	else :
+		manga_id = match.group(1)
+	res = ReleaseEntry(manga_id)
 	res.link = title['href']
 	match = title_reg.fullmatch(title.innerText().strip())
 	if match is None :
@@ -63,12 +70,6 @@ def readListingItem(item: Tag) -> ReleaseEntry :
 	res.title = match.group(1).strip()
 	if match.group(2) is not None :
 		res.number = int(match.group(2))
-	match = manga_id_reg.fullmatch(res.link)
-	if match is None :
-		logger.warning("Could not infer manga identifier for URL %s", res.link)
-		res.manga_id = 'unknown'
-	else :
-		res.manga_id = match.group(1)
 	res.editor = item.select_one('span.editor').innerText().strip()
 	res.image = item.select_one('img.entryPicture')['src']
 	if len(res.image) == 0 :

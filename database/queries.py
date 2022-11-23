@@ -10,12 +10,13 @@ logger = logging.getLogger(__name__)
 
 
 def filterRecordedEntries(cur: Cursor, source_id: str, entries: Sequence[ReleaseEntry]) -> Sequence[ReleaseEntry] :
+	recorded = []
 	for e in entries :
 		cur.execute(
 			'SELECT COUNT(*) FROM notified WHERE source_id=? AND manga_id=? AND entry_num=?;', 
 			(source_id, e.manga_id, e.number)
 		)
-	recorded = cur.fetchmany(len(entries))
+		recorded.append(cur.fetchone())
 	return [e for e, rec in zip(entries, recorded) if rec[0] == 0]
 
 

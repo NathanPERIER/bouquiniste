@@ -1,6 +1,7 @@
 
 from enum import Enum
 from datetime import date
+from typing import Final
 
 
 class PublicationStatus(Enum) :
@@ -10,10 +11,10 @@ class PublicationStatus(Enum) :
 
 
 class ReleaseEntry :
-	def __init__(self) :
+	def __init__(self, manga_id: str) :
 		self.link: str
 		self.title: str
-		self.manga_id: str
+		self.manga_id: Final[str] = manga_id
 		self.series_id: "str | None" = None
 		self.image: "str | None"  = None
 		self.number: "int | None" = None
