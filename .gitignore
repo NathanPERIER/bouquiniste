@@ -4,6 +4,7 @@
 
 # Database files
 *.db
+*.db-journal
 
 # VS Code
 /.vscode/*
