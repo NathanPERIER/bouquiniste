@@ -25,3 +25,20 @@ def recordEntry(cur: Cursor, source_id: str, entry: ReleaseEntry) :
 	values = (source_id, entry.manga_id, entry.number, timestamp)
 	logger.debug("Registered notified entry %s", str(values))
 	cur.execute('INSERT INTO notified VALUES(?, ?, ?, ?);', values)
+	_ = cur.fetchone()
+
+
+def followSeries(cur: Cursor, source_id: str, series_id: str) -> bool :
+	values = (source_id, series_id)
+	cur.execute('SELECT COUNT(*) FROM following WHERE source_id=? AND series_id=?;', values)
+	modified = (cur.fetchone()[0] == 0)
+	if modified :
+		cur.execute('INSERT INTO following VALUES(?, ?);', values)
+		_ = cur.fetchone()
+	return modified
+
+
+def getFollowedSeries(cur: Cursor, source_id: str) -> Sequence[str] :
+	values = (source_id,)
+	cur.execute('SELECT series_id FROM following WHERE source_id=?;', values)
+	return [x[0] for x in cur.fetchall()]
