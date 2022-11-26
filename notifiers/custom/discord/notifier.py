@@ -2,7 +2,8 @@
 from notifiers.base import Notifier
 from notifiers.collector import register
 from notifiers.custom.discord.config import DiscordNotifierConfig
-from core.models import ReleaseEntry, SourceInfo, PublicationStatus
+from core.models import ReleaseEntry, PublicationStatus
+from sources.base import SourceInfo
 from utils.environment import AGENT_NAME
 from utils.dates import dateToTimestamp, LOG_FORMAT
 

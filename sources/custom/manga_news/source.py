@@ -1,6 +1,6 @@
 
-from sources.base import Source
-from core.models import ReleaseEntry, SourceInfo
+from sources.base import Source, SourceInfo
+from core.models import ReleaseEntry
 from sources.collector import register
 from sources.custom.manga_news.listing import ListingPage, getFirstListingPage, getNextListingPage
 from sources.custom.manga_news.details import findDetails
@@ -11,8 +11,20 @@ from utils.wrappers import FlattenIterator
 from datetime import date
 from typing import Iterable, Sequence
 
-@register("manga_news")
+__all__ = [
+	"MangaNewsSource"
+]
+
+
+info = SourceInfo('Manga news')
+info.image = 'https://www.manga-news.com/mn-icon.png'
+info.addPattern(r'https://www\.manga-news\.com/index\.php/manga/[^/]+(?:/.*)?')
+
+@register("manga_news", info)
 class MangaNewsSource(Source) :
+
+	def __init__(self, info: SourceInfo) :
+		super().__init__(info)
 
 	def getEntries(self, begin: date, end: date) -> "Iterable[ReleaseEntry]" :
 		if begin.month == end.month and begin.year == end.year :
@@ -22,11 +34,6 @@ class MangaNewsSource(Source) :
 	def refineEntry(self, entry: ReleaseEntry) :
 		findDetails(entry)
 	
-	def getInfo(self) -> SourceInfo :
-		res = SourceInfo()
-		res.name = 'Manga news'
-		res.image = 'https://www.manga-news.com/mn-icon.png'
-		return res
 
 
 class MN_OneMonthIterable(OneMonthIterable[ListingPage,ReleaseEntry]) :

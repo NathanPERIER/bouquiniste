@@ -1,5 +1,6 @@
 
-from core.models import ReleaseEntry, SourceInfo
+from core.models import ReleaseEntry
+from sources.base import SourceInfo
 
 from typing import Mapping, Any
 
