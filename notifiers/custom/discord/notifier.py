@@ -5,7 +5,7 @@ from notifiers.custom.discord.config import DiscordNotifierConfig
 from core.models import ReleaseEntry, PublicationStatus
 from sources.base import SourceInfo
 from utils.environment import AGENT_NAME
-from utils.dates import dateToTimestamp, LOG_FORMAT
+from utils.dates import LOG_FORMAT, DISPLAY_FORMAT
 
 from discord_webhook import DiscordWebhook, DiscordEmbed
 
@@ -25,27 +25,27 @@ class DiscordNotifier(Notifier) :
 		embed.set_title(release.title)
 		if release.image is not None :
 			embed.set_image(url=release.image)
+		text = release.release.strftime(DISPLAY_FORMAT)
+		if release.number is not None :
+			text = f"{text} - Tome {release.number}"
+			if release.pub_status == PublicationStatus.FINISHED and release.pub_number is not None :
+				text = f"{text}/{release.pub_number}"
 		fields = {
 			'Author': release.author,
 			'Editor': release.editor,
 			'Pages': release.pages,
 			'Expected price': release.price
 		}
-		text = "\n".join(
+		fields_text = "\n".join(
 			f"**{prop}**: {value}"
 			for prop, value in fields.items()
 			if value is not None
 		)
-		if release.number is not None :
-			number_text = f"Tome {release.number}"
-			if release.pub_status == PublicationStatus.FINISHED and release.pub_number is not None :
-				number_text += f"/{release.pub_number}"
-			text = f"{number_text}\n\n{text}" if len(text) > 0 else number_text
-		if len(text) > 0 :
-			embed.set_description(text)
+		if len(fields_text) > 0 :
+			text = f"{text}\n\n{fields_text}"
+		embed.set_description(text)
 		if release.isbn is not None :
 			embed.set_footer(text = f"ISBN {release.isbn}")
-		embed.set_timestamp(int(dateToTimestamp(release.release)))
 		webhook.add_embed(embed)
 		webhook.execute()
 	
