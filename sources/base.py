@@ -35,3 +35,5 @@ class Source :
 	def getInfo(self) -> SourceInfo :
 		return self.info
 	
+	def getSeriesId(self, url: str) -> Optional[str] :
+		raise NotImplementedError()

@@ -12,18 +12,32 @@ from dateutil.relativedelta import relativedelta
 
 
 def help(retcode: int) :
-	print(f"usage : {sys.argv[0]} [<n_months>m][<n_weeks>w][<n_days>d]")
+	location = sys.argv[0]
+	print(f"usage : {location} [<n_months>m][<n_weeks>w][<n_days>d]")
+	print(f"        {location} follow <source_id> <series_url>")
+	print(f"        {location} init")
 	sys.exit(retcode)
 
 
-def main() :
+def main(args) :
 
-	args = sys.argv[1:]
 	if len(args) == 0 :
 		help(1)
 	
 	if args[0] in ['-h', '--help'] :
 		help(0)
+	
+	if args[0] == 'init' :
+		engine.init()
+		return
+	
+	if args[0] == 'follow' :
+		if len(args) < 3 :
+			help(1)
+		source_id = args[1]
+		url = args[2]
+		engine.followSeries(source_id, url)
+		return
 	
 	m = re.fullmatch(r'([0-9]+m)?([0-9]+w)?([0-9]+d)?', string=args[0])
 	if m is None :
@@ -41,4 +55,4 @@ def main() :
 
 
 if __name__ == '__main__' :
-	main()
+	main(sys.argv[1:])

@@ -49,3 +49,17 @@ def __b_processSource(src: ConfiguredSource, begin: date, end: date, cur: Cursor
 		for notifier in src.notifiers :
 			notifier.notifyRelease(entry, info)
 		database.queries.recordEntry(cur, src.identifier, entry)
+
+
+def followSeries(source_id: str, url: str) :
+	with getDatabaseConnection(False) as con :
+		cur = con.cursor()
+		sources = config.load(cur)
+		if source_id not in sources :
+			raise BadConfigException(f"Source {source_id} not found")
+		cs = sources[source_id]
+		series_id = cs.source.getSeriesId(url)
+		if series_id is None :
+			raise ValueError(f"URL {url} is not associated with a series from source {source_id}")
+		if database.queries.followSeries(cur, source_id, series_id) :
+			con.commit()

@@ -2,14 +2,14 @@
 from sources.base import Source, SourceInfo
 from core.models import ReleaseEntry
 from sources.collector import register
-from sources.custom.manga_news.listing import ListingPage, getFirstListingPage, getNextListingPage
+from sources.custom.manga_news.listing import ListingPage, getFirstListingPage, getNextListingPage, idFromLink
 from sources.custom.manga_news.details import findDetails
 from utils.iterables.multiple_months import MultiMonthsIterable
 from utils.iterables.one_month import OneMonthIterable
 from utils.wrappers import FlattenIterator
 
 from datetime import date
-from typing import Iterable, Sequence
+from typing import Iterable, Sequence, Optional
 
 __all__ = [
 	"MangaNewsSource"
@@ -34,6 +34,9 @@ class MangaNewsSource(Source) :
 	def refineEntry(self, entry: ReleaseEntry) :
 		findDetails(entry)
 	
+	def getSeriesId(self, url: str) -> Optional[str] :
+		return idFromLink(url)
+
 
 
 class MN_OneMonthIterable(OneMonthIterable[ListingPage,ReleaseEntry]) :
