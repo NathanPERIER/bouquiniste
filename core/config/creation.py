@@ -1,14 +1,18 @@
 
-from core.config.definitions import CONFIG_FOLDER, LISTS_FOLDER, NOTIFIERS_FILE, SOURCES_FILE
+from core.config.definitions import CONFIG_FOLDER, NOTIFIERS_FILE, SOURCES_FILE
 
 import os
 import logging
 
 logger = logging.getLogger(__name__)
 
+__all__ = [
+	"init"
+]
 
-def check() :
-	for folder in [CONFIG_FOLDER, LISTS_FOLDER] :
+
+def init() :
+	for folder in [CONFIG_FOLDER] :
 		if not os.path.exists(folder) :
 			logger.info("Create folder `%s`", folder)
 			os.mkdir(folder)
